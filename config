@@ -1,0 +1,13 @@
+# This file is for configure setting of homework
+
+# github setting
+course=ML2017
+branch=master
+hw=hw0
+deadline="2017-02-24 12:00:00"
+only_report=false
+threads=8
+save_dir=/home_local/roylu/ # absolute path
+limit_time=600
+baseline=1
+strong_baseline=200
