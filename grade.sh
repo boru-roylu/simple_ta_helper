@@ -68,25 +68,33 @@ if [ "$only_report" != true ]; then
     # Copy all student's files and run.sh to tmp directory
     mkdir $tmp_grade_dir/$stu_id
 
-    # If data is too large, comment next line
-    cp -rf $main_dir/data $tmp_grade_dir/
-    # End
+    # Export environment parameters
+    # It will be also used in child process, "run.sh" and "eval.sh"
+    export DATA_DIR=$tmp_grade_dir/data/
+    export OUTPUT_DIR=$tmp_grade_dir/output/
+    export SCORE=$tmp_grade_dir/score
+    export PROGRAM_DIR=$tmp_grade_dir/program/
+    export STU_DIR=$tmp_grade_dir/$stu_id/
 
-    cp -f $main_dir/code/$stu_id/$hw/* $tmp_grade_dir/$stu_id/
-    cp -f $main_dir/program/* $tmp_grade_dir/
+    ln -s $main_dir/data $DATA_DIR
 
-    cd $tmp_grade_dir/$stu_id
-    mkdir output
-    touch scor
+    cp -f $main_dir/code/$stu_id/$hw/* $STU_DIR
+    cp -rf $main_dir/program $PROGRAM_DIR
+
+    # Change working directory to student's tmp directory
+    cd $STU_DIR
+
+    mkdir -p $OUTPUT_DIR
+    touch $SCORE
 
     # run.sh
-    timeout -k 9 $limit_time bash -c "bash ../run.sh $args1 2> $main_dir/err/$stu_id 1> $main_dir/log/$stu_id"
+    timeout -k 9 $limit_time bash -c "bash $PROGRAM_DIR/run.sh $args1 2> $main_dir/err/$stu_id 1> $main_dir/log/$stu_id"
 
     # eval.sh
-    bash ../eval.sh $args2 2> $main_dir/err2/$stu_id 1> $main_dir/log2/$stu_id
+    bash $PROGRAM_DIR/eval.sh $args2 2> $main_dir/err2/$stu_id 1> $main_dir/log2/$stu_id
 
     mkdir -p $main_dir/output/$stu_id/
-    cp -f ../output/* $main_dir/output/$stu_id/
-    cp -f ../score $main_dir/score/$stu_id
+    cp -f $OUTPUT_DIR/* $main_dir/output/$stu_id/
+    cp -f $SCORE $main_dir/score/$stu_id
 
 fi
