@@ -15,7 +15,6 @@ fi
 . github_account
 . program_config
 
-main_dir=$save_dir/$course/$hw
 
 cd ./$course/$hw/code/
 
@@ -53,7 +52,6 @@ else
     cd ${stu_id,,}
 fi
 
-
 if [ "$only_report" != true ]; then
     if [ -d $hw ]; then 
         cd $hw 
@@ -75,11 +73,14 @@ if [ "$only_report" != true ]; then
     export SCORE=$tmp_grade_dir/score
     export PROGRAM_DIR=$tmp_grade_dir/program/
     export STU_DIR=$tmp_grade_dir/$stu_id/
+    export MAIN_DIR=$save_dir/$course/$hw
+    export STU_ID=$stu_id
 
-    ln -s $main_dir/data $DATA_DIR
+    # Create a soft link to link data in tmp student's directory
+    ln -s $MAIN_DIR/data $tmp_grade_dir
 
-    cp -f $main_dir/code/$stu_id/$hw/* $STU_DIR
-    cp -rf $main_dir/program $PROGRAM_DIR
+    cp -f $MAIN_DIR/code/$stu_id/$hw/* $STU_DIR
+    cp -rf $MAIN_DIR/program $PROGRAM_DIR
 
     # Change working directory to student's tmp directory
     cd $STU_DIR
@@ -88,13 +89,14 @@ if [ "$only_report" != true ]; then
     touch $SCORE
 
     # run.sh
-    timeout -k 9 $limit_time bash -c "bash $PROGRAM_DIR/run.sh $args1 2> $main_dir/err/$stu_id 1> $main_dir/log/$stu_id"
+    timeout -k 9 $limit_time bash -c "bash $PROGRAM_DIR/run.sh $args1 2> $MAIN_DIR/err/$stu_id 1> $MAIN_DIR/log/$stu_id"
+    #timeout -k 9 $limit_time bash -c "bash $PROGRAM_DIR/run.sh $args1" #2> $MAIN_DIR/err/$stu_id 1> $MAIN_DIR/log/$stu_id"
 
     # eval.sh
-    bash $PROGRAM_DIR/eval.sh $args2 2> $main_dir/err2/$stu_id 1> $main_dir/log2/$stu_id
+    bash $PROGRAM_DIR/eval.sh $args2 2> $MAIN_DIR/err2/$stu_id 1> $MAIN_DIR/log2/$stu_id
 
-    mkdir -p $main_dir/output/$stu_id/
-    cp -f $OUTPUT_DIR/* $main_dir/output/$stu_id/
-    cp -f $SCORE $main_dir/score/$stu_id
+    mkdir -p $MAIN_DIR/output/$stu_id/
+    cp -f $OUTPUT_DIR/* $MAIN_DIR/output/$stu_id/
+    cp -f $SCORE $MAIN_DIR/score/$stu_id
 
 fi
