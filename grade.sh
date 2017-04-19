@@ -88,6 +88,12 @@ if [ "$only_report" != true ]; then
     mkdir -p $OUTPUT_DIR
     touch $SCORE
 
+    # student script DOS to unix
+    for fn in `ls $STU_DIR/*.sh`
+    do
+        dos2unix $STU_DIR/$fn
+    done
+
     # run.sh
     timeout -k 9 $limit_time bash -c "bash $PROGRAM_DIR/run.sh $args1 2> $MAIN_DIR/err/$stu_id 1> $MAIN_DIR/log/$stu_id" \
     || echo "timeout" >> $MAIN_DIR/err/$stu_id
