@@ -79,7 +79,7 @@ if [ "$only_report" != true ]; then
     # Create a soft link to link data in tmp student's directory
     ln -s $MAIN_DIR/data $tmp_grade_dir
 
-    cp -f $MAIN_DIR/code/$stu_id/$hw/* $STU_DIR
+    cp -rf $MAIN_DIR/code/$stu_id/$hw/* $STU_DIR
     cp -rf $MAIN_DIR/program $PROGRAM_DIR
 
     # Change working directory to student's tmp directory
