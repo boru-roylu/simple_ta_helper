@@ -89,8 +89,8 @@ if [ "$only_report" != true ]; then
     touch $SCORE
 
     # run.sh
-    timeout -k 9 $limit_time bash -c "bash $PROGRAM_DIR/run.sh $args1 2> $MAIN_DIR/err/$stu_id 1> $MAIN_DIR/log/$stu_id"
-    #timeout -k 9 $limit_time bash -c "bash $PROGRAM_DIR/run.sh $args1" #2> $MAIN_DIR/err/$stu_id 1> $MAIN_DIR/log/$stu_id"
+    timeout -k 9 $limit_time bash -c "bash $PROGRAM_DIR/run.sh $args1 2> $MAIN_DIR/err/$stu_id 1> $MAIN_DIR/log/$stu_id" \
+    || echo "timeout" >> $MAIN_DIR/err/$stu_id
 
     # eval.sh
     bash $PROGRAM_DIR/eval.sh $args2 2> $MAIN_DIR/err2/$stu_id 1> $MAIN_DIR/log2/$stu_id
