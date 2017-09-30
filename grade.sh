@@ -39,8 +39,9 @@ if [ "$git_pull" = true ]; then
         echo "/${hw,,}/*" >> .git/info/sparse-checkout
     fi
 
-    git pull origin $branch
-    #git pull --depth=5 origin $branch
+    #git pull origin $branch
+    # TO save the disk usage, only clone the latest commit record
+    git pull --depth=1 origin $branch
 
     if [ "$branch" != "master" ]; then
         git checkout $branch
