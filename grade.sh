@@ -41,7 +41,7 @@ if [ "$git_pull" = true ]; then
 
     #git pull origin $branch
     # TO save the disk usage, only clone the latest commit record
-    git pull --depth=1 origin $branch
+    git pull origin $branch
 
     if [ "$branch" != "master" ]; then
         git checkout $branch
@@ -92,7 +92,7 @@ if [ "$only_report" != true ]; then
     # student script DOS to unix
     for fn in `ls $STU_DIR/*.sh`
     do
-        dos2unix $STU_DIR/$fn
+        dos2unix $fn
     done
 
     # run.sh
